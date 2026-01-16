@@ -1,0 +1,743 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'Courier New', Courier, monospace; /* Typewriter feel */
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+/* Screens */
+.screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 1s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    padding: 20px;
+    
+}
+
+.screen.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Background Layers */
+.bg-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease;
+    z-index: 1;
+    background-size: cover;
+    background-position: center;
+}
+
+.bg-layer.active {
+    opacity: 1;
+}
+
+#about-bg-layer { background: radial-gradient(circle at 50% 50%, #2E1A47 0%, #1a0b2e 40%, #05020a 100%); }
+#date-bg-layer { background: #0f0c29; } /* Dark for thunder */
+/* Dreamy sky for "Oh My Friend" section */
+#final-bg-layer {
+    background: radial-gradient(circle at 50% 50%, #3e2b48 0%, #1a0b2e 50%, #05020a 100%);
+}
+/* Dreamy sky for "Once Again" section */
+#once-again-bg-layer {
+    background: radial-gradient(circle at 50% 50%, #d81b60 0%, #8e24aa 100%);
+}
+#sorry-bg-layer { background: #232526; }
+
+#song-bg-layer {
+    /* Deep blue to indigo gradient */
+    background: linear-gradient(to top, #1a237e 0%, #0d0d15 80%);
+}
+/* Music Dedication Background - Soft Pastel */
+#music-dedication-bg {
+    background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 50%, #e1bee7 100%);
+    background-blend-mode: normal;
+}
+
+/* Video Mode Override */
+#song-bg-layer.video-mode {
+    /* A very dark, slightly warm base for pastels to pop on */
+    background: #1a1518 !important;
+    z-index: 5 !important;
+    perspective: 400px; /* This is key for the 3D effect */
+    overflow: hidden;
+}
+#song-bg-layer.video-mode::after {
+    /* Vignette */
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,0.6) 100%);
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Typography */
+.big {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+}
+
+.sub {
+    font-size: 1.5rem;
+    text-align: center;
+    opacity: 0.8;
+}
+
+/* Date Element */
+#date {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #fff;
+    min-height: 2.5rem;
+    display: inline-block;
+}
+
+/* Letter Styling */
+.content {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2rem;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    max-width: 800px;
+    width: 90%;
+    box-shadow: 0 0 20px rgba(255,255,255,0.1);
+    transform-origin: center;
+}
+
+.letter {
+    font-size: 1.2rem;
+    line-height: 1.6;
+}
+
+/* Thunder Effects */
+.thunder-flash {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 20;
+    transition: opacity 0.1s;
+}
+
+.thunder-particle {
+    position: absolute;
+    background: #ffd700;
+    border-radius: 50%;
+    z-index: 25;
+    pointer-events: none;
+    z-index: 25;
+}
+
+/* Rain */
+#rain-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.drop {
+    position: absolute;
+    top: -20px;
+    width: 1px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.6);
+    animation: fall linear infinite;
+}
+
+/* Stars Canvas */
+#stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+/* Particles (Dust, Refined, etc.) */
+.dust-wrapper, .refined-particle, .sorry-butterfly, .once-again-heart, .music-note, .final-bokeh, .final-heart, .final-blessing, .galaxy-particle, .flow-particle {
+    position: absolute;
+    pointer-events: none;
+}
+
+.dust-particle {
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+}
+
+.refined-particle {
+    /* Brighter and more distinct refined particles */
+    background: rgba(200, 200, 255, 0.7);
+    border-radius: 50%;
+    /* Adjust float animation for faster, more pronounced movement */
+    animation: floatDust linear infinite;
+    /* Add subtle glow for better visibility */
+    opacity: 0.4;
+    box-shadow: 0 0 8px rgba(200, 200, 255, 0.5);
+}
+
+.galaxy-particle {
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.2);
+}
+
+/* New Spotify-inspired background elements */
+.spotify-shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    will-change: transform;
+    animation: spotifyDrift 50s linear infinite alternate;
+}
+
+.spotify-particle {
+    position: absolute;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 8px #fff, 0 0 12px #fff;
+    animation: spotifyDrift 40s linear infinite;
+    will-change: transform;
+    filter: blur(1px);
+}
+
+.music-eq-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px; /* Height of the equalizer area */
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 5px;
+    pointer-events: none;
+    opacity: 0.15; /* Subtle low-opacity */
+    mask-image: linear-gradient(to top, black 50%, transparent 100%);
+}
+
+.eq-bar {
+    width: 10px;
+    background-color: #fff;
+    border-radius: 3px 3px 0 0;
+    animation: eqAnimate 1.5s ease-in-out infinite alternate;
+}
+
+/* Birthday Scene */
+#paper-card {
+    width: 300px;
+    height: 400px;
+    background: #fff;
+    color: #333;
+    position: relative;
+    transform: translateY(100vh);
+    transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+#s6 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    
+}
+
+.music-card-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border-radius: 5px;
+}
+
+.birthday-bg-particle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+    pointer-events: none;
+    filter: blur(2px);
+    animation: floatBirthdayBg linear infinite;
+    z-index: 1;
+}
+
+@keyframes floatBirthdayBg {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    20% { opacity: 0.6; }
+    50% { opacity: 0.8; transform: translateY(-50px) translateX(10px); }
+    80% { opacity: 0.6; }
+    100% { transform: translateY(-100px) translateX(20px); opacity: 0; }
+}
+
+/* --- Unique Background for Video Dedication (Screen 6) --- */
+#s6 {
+    /* Cinematic Deep Gradient */
+    background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #141e30);
+    background-size: 400% 400%;
+    animation: videoBgAnim 15s ease infinite;
+    background: transparent;
+    color: white; /* Ensure text is white on dark background */
+}
+
+/* Ensure buttons are visible on the dark background */
+#s6 .arrow-btn {
+    border-color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(0, 0, 0, 0.2);
+}
+#s6 .arrow-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    border-color: #fff;
+}
+
+@keyframes videoBgAnim {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Keyframes */
+@keyframes fall { to { transform: translateY(100vh); } }
+@keyframes openLetter { 0% { transform: scaleY(0); opacity: 0; } 100% { transform: scaleY(1); opacity: 1; } }
+@keyframes glowPulse { 0%, 100% { box-shadow: 0 0 20px rgba(255,255,255,0.1); } 50% { box-shadow: 0 0 40px rgba(255,255,255,0.3); } }
+@keyframes auraBreathe { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; } 50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.9; } }
+@keyframes auraBreatheActive { 0%, 100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.7; } 50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; } }
+@keyframes fadeInUpLine { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0);  } }
+@keyframes floatDust { 0% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-20px) translateX(10px); } 100% { transform: translateY(0) translateX(0); } }
+@keyframes butterflySit { 0% { transform: translateY(-50px) scale(1.5); opacity: 0; } 100% { transform: translateY(0) scale(1); opacity: 1; } }
+@keyframes fadeInTextSimple { to { opacity: 1; }    
+}
+@keyframes floatNote { 0% { transform: translateY(0) rotate(0deg); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(-100px) rotate(20deg); opacity: 0; } }
+@keyframes floatBokeh { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, -50px); } }
+@keyframes floatButterfly { 0% { transform: translate(0, 0) rotate(0deg); } 25% { transform: translate(50px, -30px) rotate(10deg); } 50% { transform: translate(0, -60px) rotate(0deg); } 75% { transform: translate(-50px, -30px) rotate(-10deg); } 100% { transform: translate(0, 0) rotate(0deg); } }
+@keyframes floatGalaxyDust {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    20% { opacity: 0.4; }
+    80% { opacity: 0.4; }
+    100% { transform: translateY(-40px) translateX(10px); opacity: 0; }
+}
+@keyframes spotifyDrift {
+    from { transform: translate(var(--x-start), var(--y-start)) scale(var(--scale-start)); }
+    to { transform: translate(var(--x-end), var(--y-end)) scale(var(--scale-end)); }
+}
+@keyframes eqAnimate {
+    0% { height: 5%; }
+    100% { height: 100%; }
+}
+.nebula-cloud {
+    display: none; /* Remove nebula */
+}
+
+/* --- MUSIC DEDICATION PAGE (S5b) --- */
+.music-dedication-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+}
+
+.cards-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.iphone-card {
+    width: 260px;
+    height: 420px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 30px;
+    box-shadow: 0 15px 35px rgba(233, 30, 99, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.5);
+    padding: 25px;
+    padding-top: 35px; /* Space for notch */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    overflow: hidden;
+}
+.iphone-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(233, 30, 99, 0.25);
+}
+
+.notch {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 20px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 10px;
+    z-index: 2;
+}
+
+.card-img-holder {
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+.card-img-holder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+.iphone-card:hover .card-img-holder img {
+    transform: scale(1.1);
+}
+
+.visualizer-bar-container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+    height: 20px;
+    width: 100%;
+    margin: 5px 0;
+}
+
+.v-bar {
+    width: 6px;
+    background: linear-gradient(to top, #ff4081, #ff80ab);
+    border-radius: 3px;
+    height: 5px;
+    animation: eqBounce 1s ease-in-out infinite;
+    animation-play-state: paused;
+}
+.v-bar:nth-child(odd) { animation-duration: 0.8s; }
+.v-bar:nth-child(2n) { animation-duration: 1.1s; }
+.v-bar:nth-child(3n) { animation-duration: 1.3s; }
+
+.card-info {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 5px;
+}
+.mini-photo-card {
+    width: 100%;
+    height: 50px;
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.4);
+}
+.mini-photo-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.9;
+}
+
+.progress-container {
+    width: 100%;
+    margin: 5px 0;
+}
+.progress-bar-bg {
+    width: 100%;
+    height: 4px;
+    background: rgba(255,255,255,0.5);
+    border-radius: 2px;
+    overflow: hidden;
+}
+.progress-fill {
+    height: 100%;
+    background: #ff80ab;
+    border-radius: 2px;
+}
+.time-stamps {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 10px;
+    color: #8d6e63;
+    margin-top: 5px;
+    font-family: 'Lato', sans-serif;
+}
+
+.mini-beats {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.mini-beats.active {
+    opacity: 1;
+}
+.beat {
+    width: 4px;
+    height: 4px;
+    background-color: #ff80ab;
+    border-radius: 50%;
+    animation: beatPulse 1s infinite ease-in-out;
+}
+.beat:nth-child(2) { animation-delay: 0.2s; }
+.beat:nth-child(3) { animation-delay: 0.4s; }
+
+.card-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    font-size: 24px;
+    color: #5d4037;
+    margin-bottom: 10px;
+}
+.play-btn {
+    font-size: 32px;
+    color: #ff4081;
+    filter: drop-shadow(0 2px 4px rgba(255, 64, 129, 0.3));
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.play-btn:hover { transform: scale(1.1); }
+
+.heart-btn {
+    font-size: 20px;
+    color: #ff4081;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+.heart-btn:hover { transform: scale(1.2); }
+
+.home-indicator {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 4px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 2px;
+}
+
+.music-connection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    opacity: 0.8;
+    position: relative;
+}
+.wave-svg {
+    width: 100%;
+    height: 60px;
+    filter: drop-shadow(0 0 5px rgba(255, 128, 171, 0.5));
+}
+.wave-path {
+    fill: none;
+    stroke: #ff80ab;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 10, 20;
+    animation: dashMove 20s linear infinite;
+}
+@keyframes dashMove {
+    to { stroke-dashoffset: -200; }
+}
+.conn-note {
+    position: absolute;
+    font-size: 12px;
+    color: #ff4081;
+    opacity: 0;
+    animation: floatConnNote 2s linear infinite;
+}
+@keyframes floatConnNote {
+    0% { transform: translateY(0) scale(0.8); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-30px) scale(1.2); opacity: 0; }
+}
+
+.bottom-dedication {
+    text-align: center;
+    margin-top: 20px;
+    position: relative;
+}
+.bottom-dedication h2 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 36px;
+    color: #880e4f;
+    text-shadow: 0 2px 4px rgba(255,255,255,0.8);
+}
+
+@keyframes fallBlossom {
+    0% { transform: translateY(0) rotate(0deg) translateX(0); }
+    100% { transform: translateY(110vh) rotate(360deg) translateX(50px); }
+}
+
+@keyframes flutterAcross {
+    0% { transform: translateX(-10vw) translateY(0) rotate(0deg); opacity: 0; }
+    10% { opacity: 0.8; }
+    90% { opacity: 0.8; }
+    100% { transform: translateX(110vw) translateY(-20vh) rotate(10deg); opacity: 0; }
+}
+@keyframes floatTeddy {
+    0% { transform: translateY(110vh) scale(0.8) rotate(-5deg); opacity: 0; }
+    20% { opacity: 0.9; }
+    80% { opacity: 0.9; }
+    100% { transform: translateY(-10vh) scale(1) rotate(5deg); opacity: 0; }
+}
+
+@keyframes beatPulse {
+    0%, 100% { transform: scale(0.8); opacity: 0.5; }
+    50% { transform: scale(1.4); opacity: 1; }
+}
+
+/* New Video Background: Memory Tunnel */
+.memory-tunnel-layer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    transform-style: preserve-3d;
+    animation: tunnel-flow 60s linear infinite;
+    mix-blend-mode: screen; /* 'screen' or 'lighten' creates beautiful light blending */
+    opacity: 0;
+    filter: blur(80px); /* Creates the soft, ethereal look */
+}
+
+/* Layer 1: Lavender */
+.memory-tunnel-layer:nth-child(1) {
+    width: 120vw;
+    height: 120vw;
+    background: radial-gradient(circle, transparent 25%, #E6E6FA 45%, transparent 65%);
+    animation-duration: 45s;
+    animation-delay: -10s;
+}
+
+/* Layer 2: Blush Pink */
+.memory-tunnel-layer:nth-child(2) {
+    width: 110vw;
+    height: 110vw;
+    background: radial-gradient(circle, transparent 25%, #FEC5E5 45%, transparent 65%);
+    animation-duration: 50s;
+    animation-delay: -25s;
+}
+
+/* Layer 3: Warm Golden */
+.memory-tunnel-layer:nth-child(3) {
+    width: 130vw;
+    height: 130vw;
+    background: radial-gradient(circle, transparent 25%, #FFECB3 45%, transparent 65%);
+    animation-duration: 55s;
+    animation-delay: 0s;
+}
+
+/* Layer 4: Warm Peach */
+.memory-tunnel-layer:nth-child(4) {
+    width: 100vw;
+    height: 100vw;
+    background: radial-gradient(circle, transparent 25%, #FFDAB9 45%, transparent 65%);
+    animation-duration: 60s;
+    animation-delay: -40s;
+}
+
+@keyframes tunnel-flow {
+    from { transform: translate(-50%, -50%) translateZ(-500px) rotate(0deg); opacity: 0; }
+    20% { opacity: 0.3; } /* Gentle fade in */
+    80% { opacity: 0.3; } /* Hold opacity */
+    to { transform: translate(-50%, -50%) translateZ(200px) rotate(120deg); opacity: 0; } /* Fade out */
+}
+
+.memory-particle {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+    transform-style: preserve-3d;
+    animation: memory-particle-float linear infinite;
+}
+
+@media (max-width: 900px) {
+    .cards-wrapper {
+        flex-direction: column;
+        gap: 20px;
+    }
+    .iphone-card {
+        width: 240px;
+        height: 380px;
+    }
+    .music-connection {
+        transform: rotate(90deg);
+        height: 40px;
+        width: 60px;
+        margin: -10px 0;
+    }
+    .bottom-dedication h2 {
+        font-size: 28px;
+    }
+}
+
+@keyframes memory-particle-float {
+    from {
+        transform: translate3d(var(--x-start), var(--y-start), -300px);
+        opacity: 0;
+    }
+    20% {
+        opacity: var(--opacity-max);
+    }
+    80% {
+        opacity: var(--opacity-max);
+    }
+    to {
+        transform: translate3d(var(--x-end), var(--y-end), 300px);
+        opacity: 0;
+    }
+}
